@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sinatra-flash}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stephen Eley"]
-  s.date = %q{2010-04-26}
+  s.date = %q{2010-04-28}
   s.description = %q{A Sinatra extension for setting and showing Rails-like flash messages. This extension improves on the Rack::Flash gem by being simpler to use, providing a full range of hash operations (including iterating through various flash keys, testing the size of the hash, etc.), and offering a 'styled_flash' view helper to render the entire flash hash with sensible CSS classes. The downside is reduced flexibility -- these methods will *only* work in Sinatra.}
   s.email = %q{sfeley@gmail.com}
   s.extra_rdoc_files = [
@@ -27,7 +27,8 @@ Gem::Specification.new do |s|
      "lib/sinatra/flash/hash.rb",
      "lib/sinatra/flash/storage.rb",
      "lib/sinatra/flash/style.rb",
-     "spec/classic_spec.rb",
+     "sinatra-flash.gemspec",
+     "spec/base_spec.rb",
      "spec/flash/hash_spec.rb",
      "spec/flash/style_spec.rb",
      "spec/flash_spec.rb",
@@ -40,7 +41,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Proper flash messages in Sinatra}
   s.test_files = [
-    "spec/classic_spec.rb",
+    "spec/base_spec.rb",
      "spec/flash/hash_spec.rb",
      "spec/flash/style_spec.rb",
      "spec/flash_spec.rb",
