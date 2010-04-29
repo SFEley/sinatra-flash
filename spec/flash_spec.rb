@@ -59,4 +59,9 @@ describe Sinatra::Flash do
     get '/flash'
     last_response.body.should == "{:hi=>:ho}"
   end
+  
+  it "behaves well when nothing ever checks the flash" do
+    get '/dummy'
+    last_response.body.should == "This page does not invoke the flash at all."
+  end
 end

@@ -9,6 +9,10 @@ set :environment, :test
 require 'sinatra/flash'
 require 'sinatra/sessionography'
 
+get '/dummy' do
+  "This page does not invoke the flash at all."
+end
+
 get '/flash' do
   if params[:key]
     flash(params[:key]).inspect
