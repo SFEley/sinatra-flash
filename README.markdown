@@ -5,7 +5,6 @@ This is an implementation of show-'em-once 'flash' messages for the [Sinatra][1]
 * Simplicity (less than 50 significant lines of code)
 * Implements the documented [behavior][3] and [public API][4] of the Rails flash that many developers are used to
 * Acts entirely like a hash, including iterations and merging
-* Zero configuration for a Sinatra 'classic' app -- it'll even turn sessions on if you didn't already
 * Optional multiple named flash collections, each with their own message hash, so that different embedded applications can access different sets of messages
 * An HTML helper for displaying flash messages with CSS styling
 * Verbose documentation in [YARD][5] format
@@ -21,11 +20,13 @@ You should know this part:
 
 (Or `sudo gem install` if you're the last person on Earth who isn't using [RVM][6] yet.)
 
-If you're developing a Sinatra ['classic'][7] application, then all you need to do is require the library:
+If you're developing a Sinatra ['classic'][7] application, then all you need to do is enable sessions and require the library:
 
     # blah_app.rb
     require 'sinatra'
     require 'sinatra/flash'
+    
+    enable :sessions
     
     post '/blah' do
       # This message won't be seen until the NEXT Web request that accesses the flash collection
@@ -42,6 +43,7 @@ If you're using the [Sinatra::Base][7] style, you also need to register the exte
     require 'sinatra/flash'
     
     class BlehApp < Sinatra::Base
+      enable :sessions
       register Sinatra::Flash
       
       get '/bleh' do
@@ -111,7 +113,9 @@ These convenience methods allow you to modify the standard rotation cycle, and a
     flash.sweep              # Rotates the flash manually, discarding _now_ and moving _next_ into its place
 
 ### Sessions
-The basic _concept_ of flash messages relies on having an active session for your application. Sinatra::Flash is built on the assumption that Sinatra's `session` helper points to something useful, and ensures that it does. If you've already set up Rack::Session::Cookie or done `enable sessions` or whatever, that session will be used. If you haven't, the `after` hook will enable sessions on your behalf using Sinatra's defaults. You'll probably get better results by configuring it yourself.
+The basic _concept_ of flash messages relies on having an active session for your application. Sinatra::Flash is built on the assumption that Sinatra's `session` helper points to something that will persist beyond the current request. You are responsible for ensuring that it does.  No other assumptions are made about the session -- you can use any [session strategy][17] you like.
+
+(**Note:** Early versions of this extension attempted to detect the absence of a session and create one for you at the last moment. Thanks to [rkh][15] for [pointing out][16] that this is unreliable in Sinatra. You'll have to be a grownup now )
 
 ### Scoped Flash
 If one flash collection isn't exciting enough for your application stack, you can have multiple sets of flash messages scoped by a symbol. Each has its own lifecycle and will _not_ be rotated by any Web request that ignores it.
@@ -155,3 +159,6 @@ This project is licensed under the **Don't Be a Dick License**, version 0.2, and
 [12]: http://github.com/SFEley/sinatra-flash/blob/master/LICENSE.markdown
 [13]: http://dbad-license.org
 [14]: http://github.com/SFEley/sinatra-sessionography
+[15]: http://github.com/rkh
+[16]: http://github.com/SFEley/sinatra-flash/issues/issue/1
+[17]: http://www.sinatrarb.com/faq.html#sessions
